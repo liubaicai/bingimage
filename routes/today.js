@@ -1,6 +1,5 @@
 var express = require('express');
 var router = express.Router();
-var axios = require('axios');
 var request = require('request');
 
 var bingHost = 'http://www.bing.com';
