@@ -3,3 +3,7 @@
 /.idea/*
 /.vscode/*
 /db/*
+/tmp/*
+
+!/db/.keep
+!/tmp/restart.txt
