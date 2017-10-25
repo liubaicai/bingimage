@@ -41,4 +41,10 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
+var schedule = require('node-schedule');
+var j = schedule.scheduleJob('5 * * * * *', function(){
+    // http://www.bing.com/HPImageArchive.aspx?format=js&idx=0&n=1
+    console.log('现在时间：',new Date());
+});
+
 module.exports = app;
