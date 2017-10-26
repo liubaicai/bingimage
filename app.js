@@ -44,9 +44,31 @@ app.use(function(err, req, res, next) {
 });
 
 var schedule = require('node-schedule');
+var request = require('request');
+var fs = require('fs');
+var bingHost = 'http://www.bing.com';
 var j = schedule.scheduleJob('5 * * * * *', function(){
-    // http://www.bing.com/HPImageArchive.aspx?format=js&idx=0&n=1
     // console.log('现在时间：',new Date());
+});
+request(`${bingHost}/HPImageArchive.aspx?format=js&idx=0&n=1`, function (error, response, body) {
+    var rootPath = './public/data'
+    var bingUrlBase = `${bingHost}${JSON.parse(body).images[0].urlbase}`;
+    var bingUrl = `${bingUrlBase}_1920x1080.jpg`;
+    var bingThumbUrl = `${bingUrlBase}_320x240.jpg`;
+    var bingName = bingUrl.split('/')[ bingUrl.split('/').length-1];
+    var bingThumbName = bingThumbUrl.split('/')[ bingThumbUrl.split('/').length-1];
+    var bingPath = `${rootPath}/image/${bingName}`
+    var bingThumbPath = `${rootPath}/thumb/${bingThumbName}`
+    if(!fs.existsSync(`${rootPath}/thumb/${bingThumbName}`)){
+        request(bingUrl).pipe(fs.createWriteStream(`${bingPath}.tmp`, {flags: 'w+'}))
+            .on('close',function(){
+                request(bingThumbUrl).pipe(fs.createWriteStream(`${bingThumbPath}.tmp`, {flags: 'w+'}))
+                    .on('close',function(){
+                        fs.renameSync(`${bingPath}.tmp`, bingPath);
+                        fs.renameSync(`${bingThumbPath}.tmp`, bingThumbPath);
+                    });
+        });
+    }
 });
 
 module.exports = app;

@@ -4,6 +4,10 @@
 /.vscode/*
 /db/*
 /tmp/*
+/public/data/image/*
+/public/data/thumb/*
 
 !/db/.keep
 !/tmp/restart.txt
+!/public/data/image/.keep
+!/public/data/thumb/.keep

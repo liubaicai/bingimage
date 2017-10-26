@@ -38,6 +38,14 @@ const bingImage = seq.define('bing_images', {
         type: Sequelize.STRING,
         allowNull: true
     },
+    thumbnailUrl: {
+        type: Sequelize.STRING,
+        allowNull: false
+    },
+    downloadUrl: {
+        type: Sequelize.STRING,
+        allowNull: false
+    },
     downloadCount: {
         type: Sequelize.INTEGER,
         allowNull: true,
