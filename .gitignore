@@ -8,6 +8,7 @@
 /public/data/thumb/*
 
 !/db/.keep
+!/db/db.demo.sqlite
 !/tmp/restart.txt
 !/public/data/image/.keep
 !/public/data/thumb/.keep

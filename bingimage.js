@@ -55,6 +55,6 @@ const bingImage = seq.define('bing_images', {
     timestamps: true
 });
 
-bingImage.sync();
+// bingImage.sync();
 
 module.exports = bingImage;

@@ -46,29 +46,65 @@ app.use(function(err, req, res, next) {
 var schedule = require('node-schedule');
 var request = require('request');
 var fs = require('fs');
+var bingImage = require('./bingImage');
+var dateFormat = require('dateformat');
 var bingHost = 'http://www.bing.com';
-var j = schedule.scheduleJob('5 * * * * *', function(){
-    // console.log('现在时间：',new Date());
+var j = schedule.scheduleJob('0 1 0 * * *', function(){
+    bingImage.findOne({ where: {startDate: dateFormat(new Date(), 'yyyymmdd')} }).then(savedImage => {
+        startDownload(savedImage);
+    })
 });
-request(`${bingHost}/HPImageArchive.aspx?format=js&idx=0&n=1`, function (error, response, body) {
-    var rootPath = './public/data'
-    var bingUrlBase = `${bingHost}${JSON.parse(body).images[0].urlbase}`;
-    var bingUrl = `${bingUrlBase}_1920x1080.jpg`;
-    var bingThumbUrl = `${bingUrlBase}_320x240.jpg`;
-    var bingName = bingUrl.split('/')[ bingUrl.split('/').length-1];
-    var bingThumbName = bingThumbUrl.split('/')[ bingThumbUrl.split('/').length-1];
-    var bingPath = `${rootPath}/image/${bingName}`
-    var bingThumbPath = `${rootPath}/thumb/${bingThumbName}`
-    if(!fs.existsSync(`${rootPath}/thumb/${bingThumbName}`)){
-        request(bingUrl).pipe(fs.createWriteStream(`${bingPath}.tmp`, {flags: 'w+'}))
-            .on('close',function(){
-                request(bingThumbUrl).pipe(fs.createWriteStream(`${bingThumbPath}.tmp`, {flags: 'w+'}))
-                    .on('close',function(){
-                        fs.renameSync(`${bingPath}.tmp`, bingPath);
-                        fs.renameSync(`${bingThumbPath}.tmp`, bingThumbPath);
-                    });
-        });
-    }
-});
+
+function startDownload(savedImage) {
+    request(`${bingHost}/HPImageArchive.aspx?format=js&idx=-1&n=1`, function (error, response, body) {
+        var rootPath = './public/data'
+        var publicRootPath = '/data'
+        var rootObj = JSON.parse(body).images[0];
+        var bingUrlBase = `${bingHost}${rootObj.urlbase}`;
+        var bingUrl = `${bingUrlBase}_1920x1080.jpg`;
+        var bingThumbUrl = `${bingUrlBase}_320x240.jpg`;
+        var bingName = bingUrl.split('/')[ bingUrl.split('/').length-1];
+        var bingThumbName = bingThumbUrl.split('/')[ bingThumbUrl.split('/').length-1];
+        var bingPath = `${rootPath}/image/${bingName}`
+        var bingThumbPath = `${rootPath}/thumb/${bingThumbName}`
+
+        if(!fs.existsSync(`${rootPath}/thumb/${bingThumbName}`)){
+            request(bingUrl).pipe(fs.createWriteStream(`${bingPath}.tmp`, {flags: 'w+'}))
+                .on('close',function(){
+                    request(bingThumbUrl).pipe(fs.createWriteStream(`${bingThumbPath}.tmp`, {flags: 'w+'}))
+                        .on('close',function(){
+                            fs.renameSync(`${bingPath}.tmp`, bingPath);
+                            fs.renameSync(`${bingThumbPath}.tmp`, bingThumbPath);
+                            if(savedImage != null){
+                                savedImage.update({
+                                    thumbnailUrl: `${publicRootPath}/thumb/${bingThumbName}`,
+                                    downloadUrl: `${publicRootPath}/image/${bingName}`,
+                                }).then(image => {
+                                    console.log('update:'+image.get({
+                                        plain: true
+                                    }).endDate)
+                                })
+                            } else {
+                                bingImage.create({
+                                    startDate: rootObj.startdate,
+                                    fullStartDate: rootObj.fullstartdate,
+                                    endDate: rootObj.enddate,
+                                    url: rootObj.url,
+                                    urlBase: rootObj.urlbase,
+                                    copyright: rootObj.copyright,
+                                    copyrightLink: rootObj.copyrightlink,
+                                    thumbnailUrl: `${publicRootPath}/thumb/${bingThumbName}`,
+                                    downloadUrl: `${publicRootPath}/image/${bingName}`,
+                                }).then(image => {
+                                    console.log('create:'+image.get({
+                                        plain: true
+                                    }).endDate)
+                                })
+                            }
+                        });
+                });
+        }
+    });
+}
 
 module.exports = app;
