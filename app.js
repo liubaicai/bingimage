@@ -46,7 +46,7 @@ app.use(function(err, req, res, next) {
 var schedule = require('node-schedule');
 var request = require('request');
 var fs = require('fs');
-var bingImage = require('./bingImage');
+var bingImage = require('./bingimage');
 var dateFormat = require('dateformat');
 var bingHost = 'http://www.bing.com';
 var j = schedule.scheduleJob('0 1 0 * * *', function(){
