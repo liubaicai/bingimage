@@ -4,8 +4,6 @@ var bingImage = require('../bingimage');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-    bingImage.count().then(c => {
-    })
     bingImage.findAndCountAll().then(function (images) {
         res.render('index', {
             title: "There are " + images.count + " images!",
