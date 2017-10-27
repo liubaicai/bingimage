@@ -12,10 +12,13 @@
     <link rel='stylesheet' href='/stylesheets/style.css' />
     <link href="//cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
     <style>
-
+        body {
+            font-family: Tahoma, Helvetica, Arial, "Microsoft Yahei","微软雅黑", STXihei, "华文细黑", sans-serif;
+            line-height:30px;
+            color:#333333;
+        }
         .container-fluid .item {
             display: inline-block;
-            width: 33.33%;
             height: auto;
             padding: .1rem;
             position: relative;
@@ -68,10 +71,10 @@
 </head>
 <body>
 <h1><%= title %></h1>
-<p>Welcome to <%= title %></p>
+<p>每日必应，精选高清壁纸精美图片</p>
 <div class="container-fluid">
     <% images.forEach(function(image){ %>
-    <div class="item col-sm-6 col-md-4">
+    <div class="item col-md-4">
         <div class="card" style="margin: 5px;">
             <img class="img-responsive" src="<%= image.thumbnailUrl %>">
             <div class="description" style="padding: 5px;" >
