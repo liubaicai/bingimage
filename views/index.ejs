@@ -21,6 +21,13 @@
         <div class="col-sm-6 col-md-4">
             <div style="margin: 20px;">
                 <img class="img-responsive" src="<%= image.thumbnailUrl %>">
+                <div class="description">
+                    <h5><%= image.copyright %></h5>
+                    <p class="calendar"><i class="icon icon-calendar"></i><em class="t"><%= dateFormat(parse(image.endDate), 'yyyy/mm/dd') %></em></p>
+                </div>
+                <div class="options">
+                    <a class="ctrl download" href="/photo/HallstattAustria_PT-BR9407016733?force=download" target="_blank" rel="nofollow"><i class="icon icon-download"></i><em class="t"><%= image.downloadCount %></em></a>
+                </div>
             </div>
         </div>
         <% }) %>
