@@ -1,18 +1,30 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title><%= title %></title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <!--[if IE]>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <![endif]-->
+    <title>每日必应 -高清壁纸精美图片</title>
+    <meta name="description" content="bing必应精选壁纸" />
+    <meta name="author" content="刘白菜" />
     <link rel='stylesheet' href='/stylesheets/style.css' />
+    <link href="//cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
 <h1><%= title %></h1>
 <p>Welcome to <%= title %></p>
-<div>
-    <% images.forEach(function(image){ %>
+<div class="container-fluid">
     <div>
-        <img src="<%= image.thumbnailUrl %>">
+        <% images.forEach(function(image){ %>
+        <div class="col-sm-6 col-md-4">
+            <div style="margin: 20px;">
+                <img class="img-responsive" src="<%= image.thumbnailUrl %>">
+            </div>
+        </div>
+        <% }) %>
     </div>
-    <% }) %>
 </div>
 </body>
 </html>
