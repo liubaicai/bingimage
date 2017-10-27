@@ -11,27 +11,79 @@
     <meta name="author" content="刘白菜" />
     <link rel='stylesheet' href='/stylesheets/style.css' />
     <link href="//cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+
+        .container-fluid .item {
+            display: inline-block;
+            width: 33.33%;
+            height: auto;
+            padding: .1rem;
+            position: relative;
+            border: none;
+        }
+
+        .container-fluid .item .card {
+            display: block;
+            height: 100%;
+            background: #dedede;
+            position: relative;
+            /*cursor: -webkit-zoom-in;*/
+            /*cursor: zoom-in;*/
+        }
+
+        .container-fluid .item .card img {
+            width: 100%;
+            border: 0;
+        }
+
+        .container-fluid .item .card .options {
+            font-size: .12rem;
+            position: absolute;
+            right: .05rem;
+            bottom: .05rem;
+            padding: .05rem;
+            display: block;
+            text-align: right;
+            -webkit-transition: all .5s ease;
+            transition: all .5s ease;
+            opacity: 1;
+            z-index: 3;
+        }
+
+        .container-fluid .item .card .description {
+            position: absolute;
+            width: 100%;
+            left: 0;
+            top: 0;
+            padding: .05rem;
+            display: block;
+            color: #fff;
+            opacity: 1;
+            -webkit-transition: all .5s ease;
+            transition: all .5s ease;
+            z-index: 1;
+            pointer-events: none;
+        }
+    </style>
 </head>
 <body>
 <h1><%= title %></h1>
 <p>Welcome to <%= title %></p>
 <div class="container-fluid">
-    <div>
-        <% images.forEach(function(image){ %>
-        <div class="col-sm-6 col-md-4">
-            <div style="margin: 20px;">
-                <img class="img-responsive" src="<%= image.thumbnailUrl %>">
-                <div class="description">
-                    <h5><%= image.copyright %></h5>
-                    <p class="calendar"><i class="icon icon-calendar"></i><em class="t"><%= dateFormat(parse(image.endDate), 'yyyy/mm/dd') %></em></p>
-                </div>
-                <div class="options">
-                    <a class="ctrl download" href="/photo/HallstattAustria_PT-BR9407016733?force=download" target="_blank" rel="nofollow"><i class="icon icon-download"></i><em class="t"><%= image.downloadCount %></em></a>
-                </div>
+    <% images.forEach(function(image){ %>
+    <div class="item col-sm-6 col-md-4">
+        <div class="card" style="margin: 5px;">
+            <img class="img-responsive" src="<%= image.thumbnailUrl %>">
+            <div class="description" style="padding: 5px;" >
+                <h5><%= image.copyright %></h5>
+                <p class="calendar"><i class="icon icon-calendar"></i><em class="t"><%= dateFormat(parse(image.endDate), 'yyyy/mm/dd') %></em></p>
+            </div>
+            <div class="options" style="padding: 5px;">
+                <a href="/download?key=<%= image.id %>" target="_blank" type="button" class="btn btn-default btn-sm">↓<%= image.downloadCount %></a>
             </div>
         </div>
-        <% }) %>
     </div>
+    <% }) %>
 </div>
 </body>
 </html>
