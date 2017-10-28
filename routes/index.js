@@ -21,8 +21,8 @@ router.get('/', function(req, res, next) {
 router.get('/today', function(req, res, next) {
     bingImage.findOne({ order: [ [ 'endDate', 'DESC' ] ] }).then(savedImage => {
         if(savedImage!=null){
-            savedImage.downloadCount++;
-            savedImage.save();
+            // savedImage.downloadCount++;
+            // savedImage.save();
             var rootPath = './public/data'
             var bingName = `${savedImage.urlBase.split('/')[ savedImage.urlBase.split('/').length-1]}_1920x1080.jpg`;
             var bingPath = `${rootPath}/image/${bingName}`;
