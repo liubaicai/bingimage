@@ -82,7 +82,7 @@
                 <p class="calendar"><i class="icon icon-calendar"></i><em class="t"><%= dateFormat(parse(image.endDate), 'yyyy/mm/dd') %></em></p>
             </div>
             <div class="options" style="padding: 5px;">
-                <a href="/download?key=<%= image.id %>" target="_blank" type="button" class="btn btn-default btn-sm">↓<%= image.downloadCount %></a>
+                <a href="/download?key=<%= image.id %>" target="_blank" type="button" class="btn btn-default btn-sm">下载(<%= image.downloadCount %>)</a>
             </div>
         </div>
     </div>
