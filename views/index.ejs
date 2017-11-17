@@ -16,6 +16,7 @@
             font-family: Tahoma, Helvetica, Arial, "Microsoft Yahei","微软雅黑", STXihei, "华文细黑", sans-serif;
             line-height:30px;
             color:#333333;
+            padding: 20px;
         }
         .container-fluid .item {
             display: inline-block;
@@ -23,6 +24,7 @@
             padding: .1rem;
             position: relative;
             border: none;
+            width: 300px;
         }
 
         .container-fluid .item .card {
@@ -73,20 +75,22 @@
 <h1><%= title %></h1>
 <p>每日必应，精选高清壁纸精美图片</p>
 <div class="container-fluid">
-    <% images.forEach(function(image){ %>
-    <div class="item col-md-4">
-        <div class="card" style="margin: 5px;">
-            <img class="img-responsive" src="<%= image.thumbnailUrl %>">
-            <div class="description" style="padding: 5px;" >
-                <h5><%= image.copyright %></h5>
-                <p class="calendar"><i class="icon icon-calendar"></i><em class="t"><%= dateFormat(parse(image.endDate), 'yyyy/mm/dd') %></em></p>
-            </div>
-            <div class="options" style="padding: 5px;">
-                <a href="/download?key=<%= image.id %>" target="_blank" type="button" class="btn btn-default btn-sm">↓<%= image.downloadCount %></a>
+    <div class="row">
+        <% images.forEach(function(image){ %>
+        <div class="item">
+            <div class="card" style="margin: 5px;">
+                <img class="img-responsive" src="<%= image.thumbnailUrl %>">
+                <div class="description" style="padding: 5px;" >
+                    <h5><%= image.copyright %></h5>
+                    <p class="calendar"><i class="icon icon-calendar"></i><em class="t"><%= dateFormat(parse(image.endDate), 'yyyy/mm/dd') %></em></p>
+                </div>
+                <div class="options" style="padding: 5px;">
+                    <a href="/download?key=<%= image.id %>" target="_blank" type="button" class="btn btn-default btn-sm">↓<%= image.downloadCount %></a>
+                </div>
             </div>
         </div>
+        <% }) %>
     </div>
-    <% }) %>
 </div>
 </body>
 </html>
