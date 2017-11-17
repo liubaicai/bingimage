@@ -10,7 +10,7 @@ var bingHost = 'http://www.bing.com';
 router.get('/', function(req, res, next) {
     bingImage.findAndCountAll({ order: [ [ 'endDate', 'DESC' ] ] }).then(function (images) {
         res.render('index', {
-            title: "There are " + images.count + " images!",
+            message: "共收集 " + images.count + " 张精美壁纸!",
             images: images.rows,
             dateFormat: dateFormat,
             parse: parse,
