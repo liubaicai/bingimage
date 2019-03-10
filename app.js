@@ -61,8 +61,8 @@ function startDownload(savedImage) {
         var bingUrlBase = `${bingHost}${rootObj.urlbase}`;
         var bingUrl = `${bingUrlBase}_1920x1080.jpg`;
         var bingThumbUrl = `${bingUrlBase}_320x240.jpg`;
-        var bingName = bingUrl.split('/')[ bingUrl.split('/').length-1];
-        var bingThumbName = bingThumbUrl.split('/')[ bingThumbUrl.split('/').length-1];
+        var bingName = bingUrl.split('/')[ bingUrl.split('/').length-1].replace('th?id=','');
+        var bingThumbName = bingThumbUrl.split('/')[ bingThumbUrl.split('/').length-1].replace('th?id=','');
         var bingPath = `${rootPath}/image/${bingName}`
         var bingThumbPath = `${rootPath}/thumb/${bingThumbName}`
 
