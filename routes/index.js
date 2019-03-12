@@ -65,7 +65,7 @@ router.get('/today', async function(req, res, next) {
         // savedImage.downloadCount++;
         // savedImage.save();
         var rootPath = './public/data'
-        var bingName = `${savedImage.urlBase.split('/')[ savedImage.urlBase.split('/').length-1]}_1920x1080.jpg`;
+        var bingName = `${savedImage.urlBase.split('/')[ savedImage.urlBase.split('/').length-1].replace('th?id=','')}_1920x1080.jpg`;
         var bingPath = `${rootPath}/image/${bingName}`;
         fs.createReadStream(bingPath).pipe(res);
     }
@@ -82,7 +82,7 @@ router.get('/download', async function (req, res, next) {
         savedImage.downloadCount++;
         savedImage.save();
         var rootPath = './public/data'
-        var bingName = `${savedImage.urlBase.split('/')[ savedImage.urlBase.split('/').length-1]}_1920x1080.jpg`;
+        var bingName = `${savedImage.urlBase.split('/')[ savedImage.urlBase.split('/').length-1].replace('th?id=','')}_1920x1080.jpg`;
         var bingPath = `${rootPath}/image/${bingName}`;
         res.download(bingPath, bingName);
     }
