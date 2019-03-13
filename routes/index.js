@@ -56,6 +56,7 @@ router.get('/', async function(req, res, next) {
         dateFormat: dateFormat,
         parse: parse,
         paginator: paginator,
+        today: dateFormat(new Date(), 'yyyymmdd'),
     });
 });
 
@@ -86,6 +87,19 @@ router.get('/download', async function (req, res, next) {
         var bingPath = `${rootPath}/image/${bingName}`;
         res.download(bingPath, bingName);
     }
+});
+
+router.get('/archiver', async function (req, res, next) {
+    var day = req.query.d;
+    var rootPath = './public/data'
+    let zipDir = `${ rootPath }/zip`
+    let todayPath = `${ zipDir }/${ day }.zip`
+    if (await fs.existsSync(todayPath)) {
+        return res.download(todayPath, `${ day }.zip`);
+    }
+    var err = new Error('Not Found');
+    err.status = 404;
+    next(err);
 });
 
 function parse(str) {

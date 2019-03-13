@@ -44,6 +44,7 @@ app.use(function(err, req, res, next) {
 var schedule = require('node-schedule');
 var request = require('request');
 var fs = require('fs');
+var archiver = require('archiver');
 var bingImage = require('./bingimage');
 var dateFormat = require('dateformat');
 var bingHost = 'http://www.bing.com';
@@ -53,8 +54,10 @@ var j = schedule.scheduleJob('0 1 0 * * *', function(){
     })
 });
 
+zip()
+
 function startDownload(savedImage) {
-    request(`${bingHost}/HPImageArchive.aspx?format=js&idx=-1&n=1`, function (error, response, body) {
+    request(`${bingHost}/HPImageArchive.aspx?format=js&idx=-1&n=1`, async function (error, response, body) {
         var rootPath = './public/data'
         var publicRootPath = '/data'
         var rootObj = JSON.parse(body).images[0];
@@ -93,7 +96,8 @@ function startDownload(savedImage) {
                                     copyrightLink: rootObj.copyrightlink,
                                     thumbnailUrl: `${publicRootPath}/thumb/${bingThumbName}`,
                                     downloadUrl: `${publicRootPath}/image/${bingName}`,
-                                }).then(image => {
+                                }).then(async image => {
+                                    await zip()
                                     console.log('create:'+image.get({
                                         plain: true
                                     }).endDate)
@@ -103,6 +107,27 @@ function startDownload(savedImage) {
                 });
         }
     });
+}
+
+async function zip () {
+    var rootPath = './public/data'
+    let zipDir = `${ rootPath }/zip`
+    let lastPath = `${ zipDir }/${ dateFormat(new Date() - 1, 'yyyymmdd') }.zip`
+    let todayPath = `${ zipDir }/${ dateFormat(new Date(), 'yyyymmdd') }.zip`
+    if (await fs.existsSync(lastPath)) {
+        await fs.unlinkSync(lastPath)
+    }
+    if (await fs.existsSync(todayPath)) {
+        //
+    } else {
+        var output = fs.createWriteStream(todayPath);
+        var archive = archiver('zip', {
+            zlib: { level: 9 } // Sets the compression level.
+        });
+        archive.pipe(output);
+        archive.directory(`${ rootPath }/image`, false);
+        archive.finalize();
+    }
 }
 
 module.exports = app;
