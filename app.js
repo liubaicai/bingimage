@@ -115,6 +115,8 @@ async function zip () {
     var accessKey = process.env.Qiniu_AccessKey;
     var secretKey = process.env.Qiniu_SecretKey;
     var mac = new qiniu.auth.digest.Mac(accessKey, secretKey);
+    var config = new qiniu.conf.Config();
+    config.zone = qiniu.zone.Zone_z0;
 
     var rootPath = './public/data'
     let zipDir = `${ rootPath }/zip`
@@ -123,9 +125,6 @@ async function zip () {
     let todayPath = `${ zipDir }/${ filename }`
     if (await fs.existsSync(lastPath)) {
         await fs.unlinkSync(lastPath)
-
-        var config = new qiniu.conf.Config();
-        config.zone = qiniu.zone.Zone_z0;
         var bucketManager = new qiniu.rs.BucketManager(mac, config);
         var bucket = "www-6mao-wang";
         var key = `${ dateFormat(new Date() - 1, 'yyyymmdd') }.zip`;
