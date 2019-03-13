@@ -162,7 +162,7 @@ async function zip () {
                 "x:age": 27,
             }
             putExtra.fname = filename;
-            putExtra.resumeRecordFile = 'progress.log';
+            putExtra.resumeRecordFile = `${ zipDir }/progress.log`;
             var key = null;
             resumeUploader.putFile(uploadToken, key, localFile, putExtra, function(respErr, respBody, respInfo) {
                 if (respErr) {
