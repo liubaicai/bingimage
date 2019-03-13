@@ -152,14 +152,21 @@ async function zip () {
             var putPolicy = new qiniu.rs.PutPolicy(options);
             var uploadToken=putPolicy.uploadToken(mac);
 
+
             var localFile = todayPath;
-            var formUploader = new qiniu.form_up.FormUploader(config);
-            var putExtra = new qiniu.form_up.PutExtra();
-            var key=filename;
-            // 文件上传
-            formUploader.putFile(uploadToken, key, localFile, putExtra, function(respErr, respBody, respInfo) {
+            var resumeUploader = new qiniu.resume_up.ResumeUploader(config);
+            var putExtra = new qiniu.resume_up.PutExtra();
+
+            putExtra.params = {
+                "x:name": "",
+                "x:age": 27,
+            }
+            putExtra.fname = filename;
+            putExtra.resumeRecordFile = 'progress.log';
+            var key = null;
+            resumeUploader.putFile(uploadToken, key, localFile, putExtra, function(respErr, respBody, respInfo) {
                 if (respErr) {
-                    console.log(respErr);
+                    throw respErr;
                 }
                 if (respInfo.statusCode !== 200) {
                     console.log(respInfo.statusCode);
