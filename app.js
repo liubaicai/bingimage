@@ -47,6 +47,8 @@ var fs = require('fs');
 var archiver = require('archiver');
 var bingImage = require('./bingimage');
 var dateFormat = require('dateformat');
+var qiniu = require('qiniu');
+
 var bingHost = 'http://www.bing.com';
 var j = schedule.scheduleJob('0 1 0 * * *', function(){
     bingImage.findOne({ where: {startDate: dateFormat(new Date(), 'yyyymmdd')} }).then(savedImage => {
@@ -81,9 +83,9 @@ function startDownload(savedImage) {
                                     thumbnailUrl: `${publicRootPath}/thumb/${bingThumbName}`,
                                     downloadUrl: `${publicRootPath}/image/${bingName}`,
                                 }).then(image => {
-                                    console.log('update:'+image.get({
-                                        plain: true
-                                    }).endDate)
+                                    // console.log('update:'+image.get({
+                                    //     plain: true
+                                    // }).endDate)
                                 })
                             } else {
                                 bingImage.create({
@@ -98,9 +100,9 @@ function startDownload(savedImage) {
                                     downloadUrl: `${publicRootPath}/image/${bingName}`,
                                 }).then(async image => {
                                     await zip()
-                                    console.log('create:'+image.get({
-                                        plain: true
-                                    }).endDate)
+                                    // console.log('create:'+image.get({
+                                    //     plain: true
+                                    // }).endDate)
                                 })
                             }
                         });
@@ -110,12 +112,32 @@ function startDownload(savedImage) {
 }
 
 async function zip () {
+    var accessKey = process.env.Qiniu_AccessKey;
+    var secretKey = process.env.Qiniu_SecretKey;
+    var mac = new qiniu.auth.digest.Mac(accessKey, secretKey);
+
     var rootPath = './public/data'
     let zipDir = `${ rootPath }/zip`
+    let filename = `${ dateFormat(new Date(), 'yyyymmdd') }.zip`;
     let lastPath = `${ zipDir }/${ dateFormat(new Date() - 1, 'yyyymmdd') }.zip`
-    let todayPath = `${ zipDir }/${ dateFormat(new Date(), 'yyyymmdd') }.zip`
+    let todayPath = `${ zipDir }/${ filename }`
     if (await fs.existsSync(lastPath)) {
         await fs.unlinkSync(lastPath)
+
+        var config = new qiniu.conf.Config();
+        config.zone = qiniu.zone.Zone_z0;
+        var bucketManager = new qiniu.rs.BucketManager(mac, config);
+        var bucket = "www-6mao-wang";
+        var key = `${ dateFormat(new Date() - 1, 'yyyymmdd') }.zip`;
+        bucketManager.delete(bucket, key, function(err, respBody, respInfo) {
+            if (err) {
+                console.log(err);
+            }
+            if (respInfo.statusCode !== 200) {
+                console.log(respInfo.statusCode);
+                console.log(respBody);
+            }
+        });
     }
     if (await fs.existsSync(todayPath)) {
         //
@@ -123,6 +145,28 @@ async function zip () {
         var output = fs.createWriteStream(todayPath);
         var archive = archiver('zip', {
             zlib: { level: 9 } // Sets the compression level.
+        });
+        output.on('close', function() {
+            var options = {
+                scope: 'www-6mao-wang',
+            };
+            var putPolicy = new qiniu.rs.PutPolicy(options);
+            var uploadToken=putPolicy.uploadToken(mac);
+
+            var localFile = todayPath;
+            var formUploader = new qiniu.form_up.FormUploader(config);
+            var putExtra = new qiniu.form_up.PutExtra();
+            var key=filename;
+            // 文件上传
+            formUploader.putFile(uploadToken, key, localFile, putExtra, function(respErr, respBody, respInfo) {
+                if (respErr) {
+                    console.log(respErr);
+                }
+                if (respInfo.statusCode !== 200) {
+                    console.log(respInfo.statusCode);
+                    console.log(respBody);
+                }
+            });
         });
         archive.pipe(output);
         archive.directory(`${ rootPath }/image`, false);
