@@ -56,7 +56,7 @@ var j = schedule.scheduleJob('0 1 0 * * *', function(){
     })
 });
 
-zip()
+// zip()
 
 function startDownload(savedImage) {
     request(`${bingHost}/HPImageArchive.aspx?format=js&idx=-1&n=1`, async function (error, response, body) {
@@ -99,7 +99,7 @@ function startDownload(savedImage) {
                                     thumbnailUrl: `${publicRootPath}/thumb/${bingThumbName}`,
                                     downloadUrl: `${publicRootPath}/image/${bingName}`,
                                 }).then(async image => {
-                                    await zip()
+                                    // await zip()
                                     // console.log('create:'+image.get({
                                     //     plain: true
                                     // }).endDate)
