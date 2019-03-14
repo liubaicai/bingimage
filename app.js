@@ -47,7 +47,7 @@ var fs = require('fs');
 var archiver = require('archiver');
 var bingImage = require('./bingimage');
 var dateFormat = require('dateformat');
-var qiniu = require('qiniu');
+// var qiniu = require('qiniu');
 
 var bingHost = 'http://www.bing.com';
 var j = schedule.scheduleJob('0 1 0 * * *', function(){
@@ -112,11 +112,11 @@ function startDownload(savedImage) {
 }
 
 async function zip () {
-    var accessKey = process.env.Qiniu_AccessKey;
-    var secretKey = process.env.Qiniu_SecretKey;
-    var mac = new qiniu.auth.digest.Mac(accessKey, secretKey);
-    var config = new qiniu.conf.Config();
-    config.zone = qiniu.zone.Zone_z0;
+    // var accessKey = process.env.Qiniu_AccessKey;
+    // var secretKey = process.env.Qiniu_SecretKey;
+    // var mac = new qiniu.auth.digest.Mac(accessKey, secretKey);
+    // var config = new qiniu.conf.Config();
+    // config.zone = qiniu.zone.Zone_z0;
 
     var rootPath = './public/data'
     let zipDir = `${ rootPath }/zip`
@@ -125,18 +125,18 @@ async function zip () {
     let todayPath = `${ zipDir }/${ filename }`
     if (await fs.existsSync(lastPath)) {
         await fs.unlinkSync(lastPath)
-        var bucketManager = new qiniu.rs.BucketManager(mac, config);
-        var bucket = "www-6mao-wang";
-        var key = `${ dateFormat(new Date() - 1, 'yyyymmdd') }.zip`;
-        bucketManager.delete(bucket, key, function(err, respBody, respInfo) {
-            if (err) {
-                console.log(err);
-            }
-            if (respInfo.statusCode !== 200) {
-                console.log(respInfo.statusCode);
-                console.log(respBody);
-            }
-        });
+        // var bucketManager = new qiniu.rs.BucketManager(mac, config);
+        // var bucket = "www-6mao-wang";
+        // var key = `${ dateFormat(new Date() - 1, 'yyyymmdd') }.zip`;
+        // bucketManager.delete(bucket, key, function(err, respBody, respInfo) {
+        //     if (err) {
+        //         console.log(err);
+        //     }
+        //     if (respInfo.statusCode !== 200) {
+        //         console.log(respInfo.statusCode);
+        //         console.log(respBody);
+        //     }
+        // });
     }
     if (await fs.existsSync(todayPath)) {
         //
@@ -145,38 +145,38 @@ async function zip () {
         var archive = archiver('zip', {
             zlib: { level: 9 } // Sets the compression level.
         });
-        output.on('close', function() {
-            var options = {
-                scope: 'www-6mao-wang',
-            };
-            var putPolicy = new qiniu.rs.PutPolicy(options);
-            var uploadToken=putPolicy.uploadToken(mac);
-
-
-            var localFile = todayPath;
-            var resumeUploader = new qiniu.resume_up.ResumeUploader(config);
-            var putExtra = new qiniu.resume_up.PutExtra();
-
-            putExtra.params = {
-                "x:name": "",
-                "x:age": 27,
-            }
-            putExtra.fname = filename;
-            putExtra.resumeRecordFile = `${ zipDir }/progress.log`;
-            var key = null;
-            resumeUploader.putFile(uploadToken, key, localFile, putExtra, function(respErr, respBody, respInfo) {
-                if (respErr) {
-                    throw respErr;
-                }
-                if (respInfo.statusCode !== 200) {
-                    console.log(respInfo.statusCode);
-                    console.log(respBody);
-                }
-            });
-        });
         archive.pipe(output);
         archive.directory(`${ rootPath }/image`, false);
         archive.finalize();
+        // output.on('close', function() {
+        //     var options = {
+        //         scope: 'www-6mao-wang',
+        //     };
+        //     var putPolicy = new qiniu.rs.PutPolicy(options);
+        //     var uploadToken=putPolicy.uploadToken(mac);
+        //
+        //
+        //     var localFile = todayPath;
+        //     var resumeUploader = new qiniu.resume_up.ResumeUploader(config);
+        //     var putExtra = new qiniu.resume_up.PutExtra();
+        //
+        //     putExtra.params = {
+        //         "x:name": "",
+        //         "x:age": 27,
+        //     }
+        //     putExtra.fname = filename;
+        //     putExtra.resumeRecordFile = `${ zipDir }/progress.log`;
+        //     var key = null;
+        //     resumeUploader.putFile(uploadToken, key, localFile, putExtra, function(respErr, respBody, respInfo) {
+        //         if (respErr) {
+        //             throw respErr;
+        //         }
+        //         if (respInfo.statusCode !== 200) {
+        //             console.log(respInfo.statusCode);
+        //             console.log(respBody);
+        //         }
+        //     });
+        // });
     }
 }
 
