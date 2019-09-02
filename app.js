@@ -50,11 +50,14 @@ var dateFormat = require('dateformat');
 // var qiniu = require('qiniu');
 
 var bingHost = 'http://www.bing.com';
-var j = schedule.scheduleJob('0 1 0 * * *', function(){
+var j = schedule.scheduleJob('0 0 6 * * *', function(){
     bingImage.findOne({ where: {startDate: dateFormat(new Date(), 'yyyymmdd')} }).then(savedImage => {
         startDownload(savedImage);
     })
 });
+bingImage.findOne({ where: {startDate: dateFormat(new Date(), 'yyyymmdd')} }).then(savedImage => {
+    startDownload(savedImage);
+})
 
 // zip()
 
