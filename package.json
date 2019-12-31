@@ -1,6 +1,6 @@
 {
   "name": "bingimage",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "",
   "author": "",
   "license": "MIT",
@@ -21,8 +21,10 @@
   },
   "dependencies": {
     "@nestjs/common": "^6.7.2",
+    "@nestjs/config": "0.0.7",
     "@nestjs/core": "^6.7.2",
     "@nestjs/platform-express": "^6.7.2",
+    "ejs": "^3.0.1",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.0",
     "rxjs": "^6.5.3"
