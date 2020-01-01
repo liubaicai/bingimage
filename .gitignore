@@ -36,3 +36,9 @@ lerna-debug.log*
 # database
 
 *.sqlite
+
+/public/data/image/*
+/public/data/thumb/*
+/public/data/zip/*
+!/public/data/image/.keep
+!/public/data/thumb/.keep

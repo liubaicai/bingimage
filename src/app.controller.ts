@@ -1,5 +1,4 @@
 import { Controller, Get, Render } from '@nestjs/common';
-import Job from './jobs/app.job';
 import { ImageService } from './model/image/image.service';
 
 @Controller()

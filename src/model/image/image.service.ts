@@ -14,14 +14,7 @@ export class ImageService {
     return this.imageRepository.find();
   }
 
-  insert(): Promise<Image> {
-    const t = {
-      name: 'test',
-      description: 'test',
-      filename: '123',
-      views: 456,
-      isPublished: false,
-    };
-    return this.imageRepository.save(t);
+  insert(image): Promise<Image> {
+    return this.imageRepository.save(image);
   }
 }

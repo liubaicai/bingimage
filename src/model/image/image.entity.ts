@@ -5,18 +5,36 @@ export class Image {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ length: 500 })
-  name: string;
-
-  @Column('text')
-  description: string;
+  @Column()
+  startDate: string;
 
   @Column()
-  filename: string;
-
-  @Column('int')
-  views: number;
+  endDate: string;
 
   @Column()
-  isPublished: boolean;
+  fullStartDate: string;
+
+  @Column()
+  url: string;
+
+  @Column()
+  urlBase: string;
+
+  @Column()
+  copyright: string;
+
+  @Column()
+  copyrightLink: string;
+
+  @Column()
+  thumbnailUrl: string;
+
+  @Column()
+  downloadUrl: string;
+
+  @Column({
+    type: 'int',
+    default: 0,
+  })
+  downloadCount: number;
 }
