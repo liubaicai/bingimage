@@ -3,8 +3,8 @@ services:
   web:
     build: .
     volumes:
-      - ./public:/myapp/public
-      - ./db:/myapp/db
+      - ./public:/app/public
+      - ./db:/app/db
     ports:
       - "9012:3000"
     restart: always

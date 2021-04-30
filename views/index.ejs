@@ -1,62 +1,123 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <title>每日必应 -高清壁纸精美图片</title>
     <meta charset="utf-8" />
     <meta
       name="viewport"
-      content="width=device-width, initial-scale=1, maximum-scale=1"
+      content="width=device-width, initial-scale=1, user-scalable=no"
     />
-    <!--[if IE]>
-      <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-    <![endif]-->
-    <title>每日必应 -高清壁纸精美图片</title>
-    <meta name="description" content="每日必应bing精选壁纸" />
-    <meta name="author" content="刘白菜" />
-    <link
-      href="//cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css"
-      rel="stylesheet"
-    />
-    <link rel="stylesheet" href="/stylesheets/style.css" />
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+
+    <!--[if lte IE 8
+      ]><script src="/assets/js/ie/html5shiv.js"></script
+    ><![endif]-->
+    <link rel="stylesheet" href="/assets/css/main.css" />
+    <!--[if lte IE 9
+      ]><link rel="stylesheet" href="/assets/css/ie9.css"
+    /><![endif]-->
+    <!--[if lte IE 8
+      ]><link rel="stylesheet" href="/assets/css/ie8.css"
+    /><![endif]-->
+    <style>
+      ::-webkit-scrollbar {
+        width: 0.5em;
+        height: 0.5em;
+      }
+
+      ::-webkit-scrollbar-thumb {
+        background: #dee6ec;
+        border-radius: 0.25em;
+      }
+
+      ::-webkit-scrollbar-track {
+        background: 20%;
+      }
+
+      body {
+        scrollbar-face-color: #dee6ec;
+        scrollbar-track-color: 20%;
+      }
+    </style>
   </head>
-  <body>
-    <div class="app">
-      <h1>每日必应，精选高清壁纸精美图片</h1>
-      <p><%= message %></p>
-      <div class="container-fluid">
-        <div class="row">
-          <% images.forEach(function(image){ %>
-          <div class="item">
-            <div class="card" style="margin: 5px;">
-              <img class="img-responsive" src="<%= image.thumbnailUrl %>" />
-              <div class="description" style="padding: 5px;">
-                <h5><%= image.copyright %></h5>
-                <p class="calendar">
-                  <i class="icon icon-calendar"></i
-                  ><em class="t"
-                    ><%= dateFormat(parse(image.endDate), 'yyyy/mm/dd') %></em
-                  >
-                </p>
-              </div>
-              <div class="options" style="padding: 5px;">
-                <a
-                  href="/download?key=<%= image.id %>"
-                  target="_blank"
-                  type="button"
-                  class="btn btn-default btn-sm"
-                  >下载(<%= image.downloadCount %>)</a
-                >
-              </div>
-            </div>
-          </div>
-          <% }) %>
-        </div>
-        <div>
-          <% if(paginator){ %> <%- paginator.render() %> <% } %>
-        </div>
+  <body class="loading">
+    <!-- Wrapper -->
+    <div id="wrapper">
+      <!-- Header -->
+      <header id="header">
+        <h1>
+          <a href="/"
+            ><strong>每日必应，精选高清壁纸精美图片</strong> 当前共 <%= count %>
+            张</a
+          >
+        </h1>
+        <nav>
+          <ul>
+            <% if(prev){ %>
+            <li>
+              <a href="<%= prev %> "
+                ><i class="fa fa-angle-left" aria-hidden="true"></i
+              ></a>
+            </li>
+            <% } else { %>
+            <li>
+              <a style="cursor: default" href="#"
+                ><i
+                  style="opacity: 0.5"
+                  class="fa fa-angle-left"
+                  aria-hidden="true"
+                ></i
+              ></a>
+            </li>
+            <% } %> <% if(next){ %>
+            <li>
+              <a href="<%= next %> "
+                ><i class="fa fa-angle-right" aria-hidden="true"></i
+              ></a>
+            </li>
+            <% } else { %>
+            <li>
+              <a style="cursor: default" href="#"
+                ><i
+                  style="opacity: 0.5"
+                  class="fa fa-angle-right"
+                  aria-hidden="true"
+                ></i
+              ></a>
+            </li>
+            <% } %>
+          </ul>
+        </nav>
+        <a style="margin-left: 20px;opacity: 0.1;" href="http://www.beian.miit.gov.cn">京ICP备14022168号-1</a>
+      </header>
+
+      <!-- Main -->
+      <div id="main">
+        <% images.forEach(function(image){ %>
+        <article class="thumb">
+          <a href="<%= image.downloadUrl %>" class="image"
+            ><img src="<%= image.thumbnailUrl %>" alt=""
+          /></a>
+          <h2>
+            <%= image.endDate %>:<%= image.copyright %>
+          </h2>
+          
+          <p><a href="/download?id=<%= image.id %>" target="_blank"
+            >下载(<%= image.downloadCount %>)</a
+          ></p>
+        </article>
+        <% }) %>
       </div>
     </div>
-    <div id="footer">
-      <a href="http://www.beian.miit.gov.cn">京ICP备14022168号-1</a>
-    </div>
+
+    <!-- Scripts -->
+    <script src="/assets/js/jquery.min.js"></script>
+    <script src="/assets/js/jquery.poptrox.min.js"></script>
+    <script src="/assets/js/skel.min.js"></script>
+    <script src="/assets/js/util.js"></script>
+    <!--[if lte IE 8
+      ]><script src="/assets/js/ie/respond.min.js"></script
+    ><![endif]-->
+    <script src="/assets/js/main.js"></script>
   </body>
 </html>

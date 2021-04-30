@@ -1,16 +1,9 @@
-# Ignore config
-/node_modules/*
-/.idea/*
-/.vscode/*
-/build/*
-/db/*
-/tmp/*
+dist
+node_modules
+db
+
 /public/data/image/*
 /public/data/thumb/*
-/public/data/zip/*
 
-!/db/.keep
-!/db/db.demo.sqlite
-!/tmp/restart.txt
 !/public/data/image/.keep
 !/public/data/thumb/.keep

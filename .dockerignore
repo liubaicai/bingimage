@@ -1,4 +1,8 @@
-/node_modules/*
-/.idea/*
-/.vscode/*
-/.git/*
+dist
+node_modules
+db
+public/data/image/*
+public/data/thumb/*
+
+!/public/data/image/.keep
+!/public/data/thumb/.keep

@@ -1,20 +1,15 @@
-FROM node:10-alpine
+FROM node:14-alpine3.13
 
-# Create app directory
-WORKDIR /myapp
+RUN apk add --no-cache alpine-sdk python2
 
-# Install app dependencies
-# A wildcard is used to ensure both package.json AND package-lock.json are copied
-# where available (npm@5+)
-COPY package*.json ./
+WORKDIR /app
 
-RUN npm ci
-# If you are building your code for production
-# RUN npm ci --only=production
 
-# Bundle app source
-COPY . .
+COPY . /app
+RUN apk add --no-cache alpine-sdk python2 && \
+    npm ci && npm run build && \
+    apk del alpine-sdk python2
 
 EXPOSE 3000
 
-CMD [ "node", "bin/www" ]
+CMD ["node", "dist/main.js"]
