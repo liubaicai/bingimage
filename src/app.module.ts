@@ -10,7 +10,7 @@ import { TasksService } from './services/tasks.service';
 @Module({
   imports: [
     TypeOrmModule.forRoot({
-      type: 'better-sqlite3',
+      type: 'sqlite',
       database: 'db/db.sqlite',
       entities: [BingImage],
       synchronize: true,

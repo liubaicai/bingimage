@@ -23,13 +23,13 @@
     "@nestjs/platform-express": "^7.6.15",
     "@nestjs/schedule": "^0.4.3",
     "@nestjs/typeorm": "^7.1.5",
-    "better-sqlite3": "^7.1.5",
     "compression": "^1.7.4",
     "dateformat": "^4.5.1",
     "ejs": "^3.1.6",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
     "rxjs": "^6.6.6",
+    "sqlite3": "^5.0.2",
     "typeorm": "^0.2.32"
   },
   "devDependencies": {
