@@ -62,10 +62,7 @@ export class AppController {
       const rootPath = './public/data';
       const bingName = `${image.urlBase
         .split('/')
-        [image.urlBase.split('/').length - 1].replace(
-          'th?id=',
-          '',
-        )}_1920x1080.jpg`;
+        [image.urlBase.split('/').length - 1].replace('th?id=', '')}_UHD.jpg`;
       const bingPath = `${rootPath}/image/${bingName}`;
       fs.createReadStream(bingPath).pipe(res);
     }
@@ -87,10 +84,7 @@ export class AppController {
       const rootPath = './public/data';
       const bingName = `${image.urlBase
         .split('/')
-        [image.urlBase.split('/').length - 1].replace(
-          'th?id=',
-          '',
-        )}_1920x1080.jpg`;
+        [image.urlBase.split('/').length - 1].replace('th?id=', '')}_UHD.jpg`;
       const bingPath = `${rootPath}/image/${bingName}`;
       res.download(bingPath, bingName);
     }

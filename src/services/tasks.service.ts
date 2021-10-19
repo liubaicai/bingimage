@@ -46,8 +46,8 @@ export class TasksService {
       const rootPath = './public/data';
       const publicRootPath = '/data';
       const bingUrlBase = `${this.bingHost}${rootObj.urlbase}`;
-      const bingUrl = `${bingUrlBase}_1920x1080.jpg`;
-      const bingThumbUrl = `${bingUrlBase}_320x240.jpg`;
+      const bingUrl = `${bingUrlBase}_UHD.jpg`;
+      const bingThumbUrl = `${bingUrlBase}_640x360.jpg`;
       const bingName = bingUrl
         .split('/')
         [bingUrl.split('/').length - 1].replace('th?id=', '');
@@ -57,7 +57,7 @@ export class TasksService {
       const bingPath = `${rootPath}/image/${bingName}`;
       const bingThumbPath = `${rootPath}/thumb/${bingThumbName}`;
 
-      await this.downloadFile(bingUrl, bingPath);
+      await this.downloadFile(bingUrl + '&w=3840&h=2160', bingPath);
       await this.downloadFile(bingThumbUrl, bingThumbPath);
       const img: any = {
         startDate: rootObj.startdate,

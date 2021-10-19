@@ -1,124 +1,105 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>每日必应 -高清壁纸精美图片</title>
-    <meta charset="utf-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1, user-scalable=no"
-    />
-    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
-    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/font-awesome@4.5.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/npm-font-source-sans-pro@1.0.2/source-sans-pro.min.css">
-    <!--[if lte IE 8 ]>
+
+<head>
+  <title>每日必应 -高清壁纸精美图片</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/font-awesome@4.5.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/npm-font-source-sans-pro@1.0.2/source-sans-pro.min.css">
+  <!--[if lte IE 8 ]>
       <script src="//cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
     <![endif]-->
-    <link rel="stylesheet" href="/assets/css/main.css" />
-    <!--[if lte IE 9
+  <link rel="stylesheet" href="/assets/css/main.css" />
+  <!--[if lte IE 9
       ]><link rel="stylesheet" href="/assets/css/ie9.css"
     /><![endif]-->
-    <!--[if lte IE 8
+  <!--[if lte IE 8
       ]><link rel="stylesheet" href="/assets/css/ie8.css"
     /><![endif]-->
-    <style>
-      ::-webkit-scrollbar {
-        width: 0.5em;
-        height: 0.5em;
-      }
+  <style>
+    ::-webkit-scrollbar {
+      width: 0.5em;
+      height: 0.5em;
+    }
 
-      ::-webkit-scrollbar-thumb {
-        background: #dee6ec;
-        border-radius: 0.25em;
-      }
+    ::-webkit-scrollbar-thumb {
+      background: #dee6ec;
+      border-radius: 0.25em;
+    }
 
-      ::-webkit-scrollbar-track {
-        background: 20%;
-      }
+    ::-webkit-scrollbar-track {
+      background: 20%;
+    }
 
-      body {
-        scrollbar-face-color: #dee6ec;
-        scrollbar-track-color: 20%;
-      }
-    </style>
-  </head>
-  <body class="loading">
-    <!-- Wrapper -->
-    <div id="wrapper">
-      <!-- Header -->
-      <header id="header">
-        <h1>
-          <a href="/"
-            ><strong>每日必应，精选高清壁纸精美图片</strong> 当前共 <%= count %>
-            张</a
-          >
-        </h1>
-        <nav>
-          <ul>
-            <% if(prev){ %>
+    body {
+      scrollbar-face-color: #dee6ec;
+      scrollbar-track-color: 20%;
+    }
+  </style>
+</head>
+
+<body class="loading">
+  <!-- Wrapper -->
+  <div id="wrapper">
+    <!-- Header -->
+    <header id="header">
+      <h1>
+        <a href="/"><strong>每日必应，精选高清壁纸精美图片</strong> 当前共 <%= count %>
+            张</a>
+      </h1>
+      <nav>
+        <ul>
+          <% if(prev){ %>
             <li>
-              <a href="<%= prev %> "
-                ><i class="fa fa-angle-left" aria-hidden="true"></i
-              ></a>
+              <a href="<%= prev %> "><i class="fa fa-angle-left" aria-hidden="true"></i></a>
             </li>
             <% } else { %>
-            <li>
-              <a style="cursor: default" href="#"
-                ><i
-                  style="opacity: 0.5"
-                  class="fa fa-angle-left"
-                  aria-hidden="true"
-                ></i
-              ></a>
-            </li>
-            <% } %> <% if(next){ %>
-            <li>
-              <a href="<%= next %> "
-                ><i class="fa fa-angle-right" aria-hidden="true"></i
-              ></a>
-            </li>
-            <% } else { %>
-            <li>
-              <a style="cursor: default" href="#"
-                ><i
-                  style="opacity: 0.5"
-                  class="fa fa-angle-right"
-                  aria-hidden="true"
-                ></i
-              ></a>
-            </li>
-            <% } %>
-          </ul>
-        </nav>
-        <a style="margin-left: 20px;opacity: 0.1;" href="http://www.beian.miit.gov.cn">京ICP备14022168号-1</a>
-      </header>
+              <li>
+                <a style="cursor: default" href="#"><i style="opacity: 0.5" class="fa fa-angle-left"
+                    aria-hidden="true"></i></a>
+              </li>
+              <% } %>
+                <% if(next){ %>
+                  <li>
+                    <a href="<%= next %> "><i class="fa fa-angle-right" aria-hidden="true"></i></a>
+                  </li>
+                  <% } else { %>
+                    <li>
+                      <a style="cursor: default" href="#"><i style="opacity: 0.5" class="fa fa-angle-right"
+                          aria-hidden="true"></i></a>
+                    </li>
+                    <% } %>
+        </ul>
+      </nav>
+      <a style="margin-left: 20px;opacity: 0.1;" href="http://www.beian.miit.gov.cn">京ICP备14022168号-1</a>
+    </header>
 
-      <!-- Main -->
-      <div id="main">
-        <% images.forEach(function(image){ %>
+    <!-- Main -->
+    <div id="main">
+      <% images.forEach(function(image){ %>
         <article class="thumb">
-          <a href="<%= image.downloadUrl %>" class="image"
-            ><img src="<%= image.thumbnailUrl %>" alt=""
-          /></a>
+          <a href="<%= image.thumbnailUrl %>" class="image"><img src="<%= image.thumbnailUrl %>" alt="" /></a>
           <h2>
             <%= image.endDate %>:<%= image.copyright %>
           </h2>
-          
-          <p><a href="/download?id=<%= image.id %>" target="_blank"
-            >下载(<%= image.downloadCount %>)</a
-          ></p>
+
+          <p><a href="/download?id=<%= image.id %>" target="_blank">4K下载(<%= image.downloadCount %>)</a></p>
         </article>
         <% }) %>
-      </div>
     </div>
+  </div>
 
-    <!-- Scripts -->
-    <script src="//cdn.jsdelivr.net/npm/jquery@1.11.3/dist/jquery.min.js"></script>
-    <script src="/assets/js/jquery.poptrox.min.js"></script>
-    <script src="//cdn.jsdelivr.net/npm/skeljs@3.0.2/src/skel.min.js"></script>
-    <script src="/assets/js/util.js"></script>
-    <!--[if lte IE 8]>
+  <!-- Scripts -->
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.11.3/dist/jquery.min.js"></script>
+  <script src="/assets/js/jquery.poptrox.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/skeljs@3.0.2/src/skel.min.js"></script>
+  <script src="/assets/js/util.js"></script>
+  <!--[if lte IE 8]>
       <script src="//cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
     <![endif]-->
-    <script src="/assets/js/main.js"></script>
-  </body>
+  <script src="/assets/js/main.js"></script>
+</body>
+
 </html>
