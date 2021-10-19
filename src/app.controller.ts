@@ -15,7 +15,7 @@ import * as fs from 'fs';
 export class AppController {
   private readonly logger = new Logger(AppController.name);
 
-  constructor(private readonly appService: AppService) {}
+  constructor(private readonly appService: AppService) { }
 
   @Get()
   @Render('index')
@@ -62,7 +62,7 @@ export class AppController {
       const rootPath = './public/data';
       const bingName = `${image.urlBase
         .split('/')
-        [image.urlBase.split('/').length - 1].replace('th?id=', '')}_UHD.jpg`;
+      [image.urlBase.split('/').length - 1].replace('th?id=', '')}_UHD.jpg`;
       const bingPath = `${rootPath}/image/${bingName}`;
       fs.createReadStream(bingPath).pipe(res);
     }
@@ -84,9 +84,18 @@ export class AppController {
       const rootPath = './public/data';
       const bingName = `${image.urlBase
         .split('/')
-        [image.urlBase.split('/').length - 1].replace('th?id=', '')}_UHD.jpg`;
+      [image.urlBase.split('/').length - 1].replace('th?id=', '')}_UHD.jpg`;
+      const bingName2 = `${image.urlBase
+        .split('/')
+      [image.urlBase.split('/').length - 1].replace('th?id=', '')}_1920x1080.jpg`;
       const bingPath = `${rootPath}/image/${bingName}`;
-      res.download(bingPath, bingName);
+      const bingPath2 = `${rootPath}/image/${bingName2}`;
+
+      if (fs.existsSync(bingPath)) {
+        res.download(bingPath, bingName);
+      } else {
+        res.download(bingPath2, bingName2);
+      }
     }
   }
 }
