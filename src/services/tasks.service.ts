@@ -57,7 +57,7 @@ export class TasksService {
       const bingPath = `${rootPath}/image/${bingName}`;
       const bingThumbPath = `${rootPath}/thumb/${bingThumbName}`;
 
-      await this.downloadFile(bingUrl + '&w=3840&h=2160', bingPath);
+      await this.downloadFile(bingUrl, bingPath);
       await this.downloadFile(bingThumbUrl, bingThumbPath);
       const img: any = {
         startDate: rootObj.startdate,
