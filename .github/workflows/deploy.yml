@@ -3,7 +3,7 @@ name: Build and Deploy
 on:
   push:
     branches:
-      - master2
+      - master
   workflow_dispatch: # 允许手动触发
 
 jobs:
