@@ -14,7 +14,7 @@ COPY --from=builder /app/package*.json /app/
 COPY --from=builder /app/dist/ /app/dist/
 COPY --from=builder /app/public/ /app/public/
 COPY --from=builder /app/views/ /app/views/
-RUN npm ci --only=production
+RUN npm ci --omit=dev
 
 EXPOSE 3000
 

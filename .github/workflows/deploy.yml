@@ -53,5 +53,6 @@ jobs:
             rm -rf dist
             tar -xzf /tmp/dist.tar.gz
             rm /tmp/dist.tar.gz
+            npm ci --omit=dev
             # 重启应用
             pm2 restart ecosystem.config.js || pm2 start ecosystem.config.js
