@@ -1,11 +1,11 @@
   
-FROM node:14-alpine3.13 as builder
+FROM node:22-alpine as builder
 
 WORKDIR /app
 COPY . /app
 RUN npm ci && npm run build
 
-FROM node:14-alpine3.13
+FROM node:22-alpine
 
 RUN apk add --no-cache postgresql-client
 

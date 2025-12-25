@@ -1,7 +1,9 @@
-import { HttpService, Injectable, Logger } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
+import { HttpService } from '@nestjs/axios';
 import { Interval, Timeout } from '@nestjs/schedule';
-import * as dateFormat from 'dateformat';
+import dateFormat from 'dateformat';
 import * as fs from 'fs';
+import { firstValueFrom } from 'rxjs';
 import { AppService } from '../app.service';
 
 @Injectable()
@@ -40,7 +42,7 @@ export class TasksService {
     }
     if (exist === false) {
       this.logger.log('start download...');
-      const resp = await this.httpService.get<any>(this.bingUrl).toPromise();
+      const resp = await firstValueFrom(this.httpService.get<any>(this.bingUrl));
       const rootObj = resp.data.images[0];
 
       const rootPath = './public/data';
@@ -84,11 +86,11 @@ export class TasksService {
       fs.unlinkSync(filepath);
     }
     const writer = fs.createWriteStream(`${filepath}.tmp`, { flags: 'w+' });
-    const response = await this.httpService
-      .get(url, {
+    const response = await firstValueFrom(
+      this.httpService.get(url, {
         responseType: 'stream',
       })
-      .toPromise();
+    );
     response.data.pipe(writer);
     return new Promise((resolve, reject) => {
       writer.on('finish', async () => {

@@ -1,0 +1,57 @@
+name: Build and Deploy
+
+on:
+  push:
+    branches:
+      - master2
+  workflow_dispatch: # 允许手动触发
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Build
+        run: npm run build
+      
+      - name: Compress output
+        run: tar -czf dist.tar.gz dist
+      
+      - name: Deploy to server via SSH
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USER }}
+          key: ${{ secrets.SERVER_SSH_KEY }}
+          port: ${{ secrets.SERVER_PORT || 22 }}
+          source: "dist.tar.gz"
+          target: "/tmp"
+      
+      - name: Execute remote commands
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USER }}
+          key: ${{ secrets.SERVER_SSH_KEY }}
+          port: ${{ secrets.SERVER_PORT || 22 }}
+          script: |
+            cd ${{ secrets.APP_DIR }}
+            git pull origin master
+            # 解压新的构建产物
+            rm -rf dist
+            tar -xzf /tmp/dist.tar.gz
+            rm /tmp/dist.tar.gz
+            # 重启应用
+            pm2 restart ecosystem.config.js || pm2 start ecosystem.config.js
